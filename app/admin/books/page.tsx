@@ -10,20 +10,10 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import SetBookOfTheMonthButton from "@/components/admin/SetBookOfTheMonthButton";
-import type { Prisma } from "@prisma/client";
+
 
 export const dynamic = "force-dynamic";
-type AdminBook = Prisma.BookGetPayload<{
-  include: {
-    author: true;
-    files: true;
-    categories: {
-      include: {
-        category: true;
-      };
-    };
-  };
-}>;
+
 
 export default async function AdminBooksPage() {
   const session = await getServerSession(authOptions);
@@ -96,8 +86,8 @@ export default async function AdminBooksPage() {
               </thead>
 
               <tbody>
-                {/* {books.map((book) => { */}
-                {books.map((book: AdminBook) => {
+                {books.map((book) => {
+                {/* {books.map((book: AdminBook) => { */}
                   const type = book.files[0]?.fileType || "No File";
                   const category =
                     book.categories[0]?.category.name || "General";
