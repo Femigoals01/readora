@@ -14,6 +14,24 @@ import SetBookOfTheMonthButton from "@/components/admin/SetBookOfTheMonthButton"
 
 export const dynamic = "force-dynamic";
 
+type AdminBook = {
+  id: string;
+  title: string;
+  coverImage: string | null;
+  status: string;
+  isBookOfTheMonth: boolean;
+  author: {
+    name: string;
+  } | null;
+  files: {
+    fileType: string;
+  }[];
+  categories: {
+    category: {
+      name: string;
+    };
+  }[];
+};
 
 export default async function AdminBooksPage() {
   const session = await getServerSession(authOptions);
@@ -26,7 +44,7 @@ export default async function AdminBooksPage() {
     redirect("/dashboard");
   }
 
-  const books = await prisma.book.findMany({
+  const books = (await prisma.book.findMany({
     orderBy: { createdAt: "desc" },
     include: {
       author: true,
@@ -37,7 +55,7 @@ export default async function AdminBooksPage() {
         },
       },
     },
-  });
+  })) as AdminBook[];
 
   return (
     <main className="min-h-screen bg-[#F8FAFC] px-5 py-8 text-slate-950 md:px-8">
@@ -87,7 +105,7 @@ export default async function AdminBooksPage() {
 
               <tbody>
                 {books.map((book) => {
-                {/* {books.map((book: AdminBook) => { */}
+               
                   const type = book.files[0]?.fileType || "No File";
                   const category =
                     book.categories[0]?.category.name || "General";
