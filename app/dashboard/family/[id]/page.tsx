@@ -149,11 +149,17 @@ export default async function FamilyDetailsPage({
                 completedAt: progress.completedAt,
             }))
         )
+        // .sort(
+        //     (a, b) =>
+        //         new Date(b.completedAt || 0).getTime() -
+        //         new Date(a.completedAt || 0).getTime()
+        // )
+
         .sort(
-            (a, b) =>
-                new Date(b.completedAt || 0).getTime() -
-                new Date(a.completedAt || 0).getTime()
-        )
+  (a: FamilyActivityItem, b: FamilyActivityItem) =>
+    new Date(b.completedAt || 0).getTime() -
+    new Date(a.completedAt || 0).getTime()
+)
         .slice(0, 8);
 
     return (
@@ -277,11 +283,17 @@ export default async function FamilyDetailsPage({
 
                     <div className="space-y-3">
                         {[...family.members]
+                            // .sort(
+                            //     (a, b) =>
+                            //         b.user.readingProgress.length -
+                            //         a.user.readingProgress.length
+                            // )
+
                             .sort(
-                                (a, b) =>
-                                    b.user.readingProgress.length -
-                                    a.user.readingProgress.length
-                            )
+  (a: FamilyMemberItem, b: FamilyMemberItem) =>
+    b.user.readingProgress.length -
+    a.user.readingProgress.length
+)
                             .map((member: FamilyMemberItem, index: number) => (
                                 <div
                                     key={member.id}
