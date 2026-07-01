@@ -9,6 +9,20 @@ import DashboardShell from "@/components/layout/DashboardShell";
 
 export const dynamic = "force-dynamic";
 
+type NoteItem = {
+  id: string;
+  page: number | null;
+  content: string;
+  createdAt: Date;
+  book: {
+    title: string;
+    slug: string;
+    author: {
+      name: string;
+    } | null;
+  };
+};
+
 export default async function NotesPage() {
   const session = await getServerSession(authOptions);
 
@@ -74,7 +88,7 @@ export default async function NotesPage() {
               </p>
             </div>
           ) : (
-            notes.map((note) => (
+            notes.map((note: NoteItem) => (
               <article
                 key={note.id}
                 className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm"
