@@ -110,11 +110,20 @@ Current book:
         const completedBooksContext =
             completedBooks.length > 0
                 ? completedBooks
+                    // .map(
+                    //     (item, index) =>
+                    //         `${index + 1}. ${item.book.title} by ${item.book.author?.name || "Unknown Author"
+                    //         }`
+                    // )
                     .map(
-                        (item, index) =>
-                            `${index + 1}. ${item.book.title} by ${item.book.author?.name || "Unknown Author"
-                            }`
-                    )
+  (
+    item: { book: { title: string; author: { name: string } | null } },
+    index: number
+  ) =>
+    `${index + 1}. ${item.book.title} by ${
+      item.book.author?.name || "Unknown Author"
+    }`
+)
                     .join("\n")
                 : "No completed books yet.";
 
