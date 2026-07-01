@@ -104,7 +104,7 @@ const averageRating =
      const session = await getServerSession(authOptions);
 
     const userReview = session?.user?.id
-  ? book.reviews.find((review) => review.userId === session.user.id)
+  ? book.reviews.find((review: ReviewItem) => review.userId === session.user.id)
   : null;
 
    
