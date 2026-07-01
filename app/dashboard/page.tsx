@@ -294,7 +294,7 @@ export default async function DashboardPage() {
             where: {
                 status: "PUBLISHED",
                 id: {
-                    notIn: progress.map((item) => item.bookId),
+                    notIn: progress.map((item: ProgressItem) => item.bookId),
                 },
             },
             take: 2,
