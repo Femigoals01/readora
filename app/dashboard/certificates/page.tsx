@@ -82,7 +82,20 @@ export default async function CertificatesPage() {
             </div>
           ) : (
             <div className="grid gap-5 md:grid-cols-2">
-              {completedBooks.map((item) => (
+              {/* {completedBooks.map((item) => ( */}
+              {completedBooks.map((item: {
+  id: string;
+  currentPage: number;
+  percentage: number;
+  completedAt: Date | null;
+  book: {
+    title: string;
+    slug: string;
+    author: {
+      name: string;
+    } | null;
+  };
+}) => (
                 <div
                   key={item.id}
                   className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm"
