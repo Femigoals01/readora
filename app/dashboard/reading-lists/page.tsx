@@ -7,6 +7,16 @@ import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
+type ReadingListItem = {
+  id: string;
+  name: string;
+  description: string | null;
+  public: boolean;
+  books: {
+    id: string;
+  }[];
+};
+
 export default async function ReadingListsPage() {
   const session = await getServerSession(authOptions);
 
@@ -83,7 +93,9 @@ export default async function ReadingListsPage() {
           </section>
         ) : (
           <section className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {lists.map((list) => (
+            {/* {lists.map((list) => ( */}
+
+            {lists.map((list: ReadingListItem) => (
               <Link
                 key={list.id}
                 href={`/dashboard/reading-lists/${list.id}`}

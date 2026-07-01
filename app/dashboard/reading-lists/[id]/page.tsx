@@ -222,6 +222,8 @@ import DeleteReadingListButton from "@/components/reading-lists/DeleteReadingLis
 
 export const dynamic = "force-dynamic";
 
+
+
 type ReadingListBookItem = {
   id: string;
   book: {
