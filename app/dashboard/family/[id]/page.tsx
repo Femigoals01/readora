@@ -141,7 +141,7 @@ export default async function FamilyDetailsPage({
 );
 
     const familyActivities = family.members
-        .flatMap((member) =>
+        .flatMap((member: FamilyMemberItem) =>
             member.user.readingProgress.map((progress) => ({
                 id: progress.id,
                 memberName: member.user.name || member.user.email.split("@")[0],
