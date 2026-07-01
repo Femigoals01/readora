@@ -1,3 +1,5 @@
+
+
 import DashboardShell from "@/components/layout/DashboardShell";
 import Link from "next/link";
 import { ArrowLeft, Bookmark } from "lucide-react";
@@ -7,6 +9,20 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
+
+
+type BookmarkItem = {
+  id: string;
+  page: number;
+  note: string | null;
+  book: {
+    title: string;
+    slug: string;
+    author: {
+      name: string;
+    } | null;
+  };
+};
 
 export default async function BookmarksPage() {
   const session = await getServerSession(authOptions);
@@ -63,7 +79,9 @@ export default async function BookmarksPage() {
             </div>
           ) : (
             <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-              {bookmarks.map((bookmark) => (
+              {/* {bookmarks.map((bookmark) => ( */}
+
+              {bookmarks.map((bookmark: BookmarkItem) => (
                 <Link
                   key={bookmark.id}
                   href={`/reader/${bookmark.book.slug}`}
