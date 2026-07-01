@@ -17,6 +17,36 @@ import DeleteFamilyButton from "@/components/family/DeleteFamilyButton";
 
 export const dynamic = "force-dynamic";
 
+type FamilyMemberItem = {
+  id: string;
+  userId: string;
+  role: string;
+  user: {
+    name: string | null;
+    email: string;
+    readingProgress: {
+      id: string;
+      completedAt: Date | null;
+      book: {
+        title: string;
+      };
+    }[];
+  };
+};
+
+type FamilyGoalItem = {
+  id: string;
+  title: string;
+  targetBooks: number;
+};
+
+type FamilyActivityItem = {
+  id: string;
+  memberName: string;
+  bookTitle: string;
+  completedAt: Date | null;
+};
+
 export default async function FamilyDetailsPage({
     params,
 }: {
@@ -93,10 +123,22 @@ export default async function FamilyDetailsPage({
 
     const isOwner = family.ownerId === session.user.id;
 
+    // const familyCompletedBooks = family.members.reduce(
+    //     (sum, member) => sum + member.user.readingProgress.length,
+    //     0
+    // );
+
     const familyCompletedBooks = family.members.reduce(
-        (sum, member) => sum + member.user.readingProgress.length,
-        0
-    );
+  (
+    sum: number,
+    member: {
+      user: {
+        readingProgress: unknown[];
+      };
+    }
+  ) => sum + member.user.readingProgress.length,
+  0
+);
 
     const familyActivities = family.members
         .flatMap((member) =>
@@ -188,11 +230,12 @@ export default async function FamilyDetailsPage({
                         </p>
                     ) : (
                         <div className="grid gap-4 md:grid-cols-2">
-                            {family.goals.map((goal) => {
+                            {family.goals.map((goal: FamilyGoalItem) => {
                                 const percent = Math.min(
                                     100,
                                     Math.round((familyCompletedBooks / goal.targetBooks) * 100)
                                 );
+
 
                                 return (
                                     <div
@@ -239,7 +282,7 @@ export default async function FamilyDetailsPage({
                                     b.user.readingProgress.length -
                                     a.user.readingProgress.length
                             )
-                            .map((member, index) => (
+                            .map((member: FamilyMemberItem, index: number) => (
                                 <div
                                     key={member.id}
                                     className="flex items-center justify-between rounded-2xl bg-slate-50 p-4"
@@ -279,7 +322,7 @@ export default async function FamilyDetailsPage({
                         </p>
                     ) : (
                         <div className="mt-6 space-y-3">
-                            {familyActivities.map((activity) => (
+                            {familyActivities.map((activity: FamilyActivityItem) => (
                                 <div
                                     key={activity.id}
                                     className="rounded-2xl bg-slate-50 p-4"
@@ -309,7 +352,7 @@ export default async function FamilyDetailsPage({
                     </div>
 
                     <div className="grid gap-4 md:grid-cols-2">
-                        {family.members.map((member) => (
+                        {family.members.map((member: FamilyMemberItem) => (
                             <div
                                 key={member.id}
                                 className="rounded-2xl border border-slate-200 bg-slate-50 p-5"
