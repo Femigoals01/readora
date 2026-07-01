@@ -101,7 +101,8 @@ Current book:
 - Current page: ${currentProgress.currentPage}
 - Progress: ${Math.round(currentProgress.percentage)}%
 - Categories: ${currentProgress.book.categories
-                .map((item) => item.category.name)
+                // .map((item) => item.category.name)
+                .map((item: { category: { name: string } }) => item.category.name)
                 .join(", ")}
 `
             : "The user has not started a book yet.";
