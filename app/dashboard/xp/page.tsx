@@ -66,7 +66,14 @@ export default async function XPPage() {
                 No XP earned yet. Start reading to earn your first points.
               </p>
             ) : (
-              history.map((item) => (
+            //   history.map((item) => (
+
+            history.map((item: {
+  id: string;
+  activity: string;
+  points: number;
+  createdAt: Date;
+}) => (
                 <div
                   key={item.id}
                   className="flex items-center justify-between rounded-2xl bg-slate-50 p-4"
