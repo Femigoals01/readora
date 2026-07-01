@@ -11,6 +11,13 @@ import {
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
+type ChallengeItem = {
+  id: string;
+  title: string;
+  description: string | null;
+  rewardXP: number;
+  endDate: Date;
+};
 
 export default async function ChallengesPage() {
   const challenges = await prisma.challenge.findMany({
@@ -63,7 +70,8 @@ export default async function ChallengesPage() {
           </section>
         ) : (
           <section className="mt-8 grid gap-5 md:grid-cols-2">
-            {challenges.map((challenge) => (
+            {/* {challenges.map((challenge) => ( */}
+            {challenges.map((challenge: ChallengeItem) => (
               <div
                 key={challenge.id}
                 className="rounded-[2rem] border border-slate-200 bg-white p-6 shadow-sm"
