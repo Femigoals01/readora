@@ -30,6 +30,49 @@ import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
+type ProgressItem = {
+  id: string;
+  bookId: string;
+  currentPage: number;
+  percentage: number;
+  completed: boolean;
+  book: {
+    title: string;
+    slug: string;
+    coverImage: string | null;
+    pages: number | null;
+    author: { name: string } | null;
+    categories: { categoryId: string }[];
+  };
+};
+
+type CategoryItem = {
+  categoryId: string;
+};
+
+type ReadingSessionItem = {
+  minutesRead: number;
+};
+
+type BadgeItem = {
+  badge: {
+    id: string;
+    name: string;
+    icon: string | null;
+  };
+};
+
+type RecommendedBookItem = {
+  id: string;
+  title: string;
+  slug: string;
+  coverImage: string | null;
+  featured: boolean;
+  isBookOfTheMonth: boolean;
+  author: { name: string } | null;
+  categories: { categoryId: string }[];
+};
+
 
 const dashboardLinks = [
     {
@@ -180,9 +223,13 @@ export default async function DashboardPage() {
 
     const categoryIds = [
         ...new Set(
-            progress.flatMap((item) =>
-                item.book.categories?.map((categoryItem) => categoryItem.categoryId) || []
-            )
+            // progress.flatMap((item) =>
+            //     item.book.categories?.map((categoryItem) => categoryItem.categoryId) || []
+            // )
+
+            progress.flatMap((item: ProgressItem) =>
+  item.book.categories?.map((categoryItem: CategoryItem) => categoryItem.categoryId) || []
+)
         ),
     ];
 
@@ -229,7 +276,7 @@ export default async function DashboardPage() {
                 }
                 : {}),
             id: {
-                notIn: progress.map((item) => item.bookId),
+                notIn: progress.map((item: ProgressItem) => item.bookId),
             },
         },
         take: 3,
@@ -277,9 +324,9 @@ export default async function DashboardPage() {
     //     };
     // });
 
-    const recommendedBooksWithScore = recommendedBooks.map((book) => {
+    const recommendedBooksWithScore = recommendedBooks.map((book: RecommendedBookItem) => {
         const matchingCategories =
-            book.categories?.filter((item) =>
+            book.categories?.filter((item: CategoryItem) =>
                 categoryIds.includes(item.categoryId)
             ).length || 0;
 
@@ -308,14 +355,14 @@ export default async function DashboardPage() {
     });
 
     const totalMinutesRead = sessions.reduce(
-        (sum, item) => sum + item.minutesRead,
+        (sum: number, item: ReadingSessionItem) => sum + item.minutesRead,
         0
     );
 
     const hoursReading = Math.round(totalMinutesRead / 60);
     const booksStarted = progress.length;
-    const booksCompleted = progress.filter((item) => item.completed).length;
-    const pagesRead = progress.reduce((sum, item) => sum + item.currentPage, 0);
+    const booksCompleted = progress.filter((item: ProgressItem) => item.completed).length;
+    const pagesRead = progress.reduce((sum: number, item: ProgressItem) => sum + item.currentPage, 0);
     const currentBook = progress[0];
 
     const firstName = session.user.name?.split(" ")[0] || "Reader";
@@ -558,7 +605,7 @@ export default async function DashboardPage() {
                                     { badge: { id: "streak", name: "Streak 7", icon: "🔥" } },
                                     { badge: { id: "gold", name: "Gold Reader", icon: "⭐" } },
                                 ]
-                            ).map((item) => (
+                            ).map((item: BadgeItem) => (
                                 <div
                                     key={item.badge.id}
                                     className="rounded-2xl bg-slate-50 p-4 text-center"
