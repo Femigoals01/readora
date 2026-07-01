@@ -23,6 +23,30 @@ import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
+type CategoryItem = {
+  category: {
+    id: string;
+    name: string;
+  };
+};
+
+type FileItem = {
+  id: string;
+  fileType: string;
+  fileUrl: string | null;
+};
+
+type ReviewItem = {
+  id: string;
+  rating: number;
+  comment: string;
+  userId: string;
+  user: {
+    name: string | null;
+    email: string;
+  };
+};
+
 export default async function BookDetailsPage({
     params,
 }: {
@@ -56,11 +80,24 @@ export default async function BookDetailsPage({
 
     const mainFile = book.files[0];
 
-    const averageRating =
+//     const averageRating =
     
+//   book.reviews.length > 0
+//     ? book.reviews.reduce((sum, review) => sum + review.rating, 0) /
+//       book.reviews.length
+//     : 0;
+
+const averageRating =
   book.reviews.length > 0
-    ? book.reviews.reduce((sum, review) => sum + review.rating, 0) /
-      book.reviews.length
+    ? book.reviews.reduce(
+        (
+          sum: number,
+          review: {
+            rating: number;
+          }
+        ) => sum + review.rating,
+        0
+      ) / book.reviews.length
     : 0;
 
 
@@ -115,7 +152,7 @@ const savedBook = session?.user?.id
 
                         <div>
                             <div className="mb-4 flex flex-wrap gap-2">
-                                {book.categories.map((item) => (
+                                {book.categories.map((item: CategoryItem) => (
                                     <span
                                         key={item.category.id}
                                         className="rounded-full bg-emerald-400/15 px-4 py-2 text-sm font-bold text-emerald-300"
@@ -132,7 +169,7 @@ const savedBook = session?.user?.id
                             </p>
 
                             <div className="mt-5 flex flex-wrap gap-3 text-sm font-bold">
-                                {book.files.map((file) => (
+                                {book.files.map((file: FileItem) => (
                                     <span
                                         key={file.id}
                                         className="rounded-full bg-white/10 px-4 py-2"
@@ -219,7 +256,7 @@ const savedBook = session?.user?.id
 </Link>
 
 
-                        {book.files.some((f) => f.fileType === "MP3") && (
+                        {book.files.some((f: FileItem) => f.fileType === "MP3") && (
 
                         <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
                             <Headphones className="text-emerald-600" />
@@ -231,7 +268,7 @@ const savedBook = session?.user?.id
                         )}
 
 
-                        {book.files.some((f) => f.fileType === "MP4") && (
+                        {book.files.some((f: FileItem) => f.fileType === "MP4") && (
 
                         <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
                             <PlayCircle className="text-emerald-600" />
@@ -300,10 +337,10 @@ const savedBook = session?.user?.id
         </p>
       </div>
     ) : (
-      book.reviews.map((review) => (
+      book.reviews.map((review: ReviewItem) => (
         <div key={review.id} className="rounded-2xl bg-slate-50 p-5">
           <div className="mb-3 flex text-amber-400">
-            {[1, 2, 3, 4, 5].map((star) => (
+            {[1, 2, 3, 4, 5].map((star: number) => (
               <Star
                 key={star}
                 size={16}
