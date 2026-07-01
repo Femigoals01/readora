@@ -73,6 +73,11 @@ type RecommendedBookItem = {
   categories: { categoryId: string }[];
 };
 
+type RecommendedBookWithScore = RecommendedBookItem & {
+  matchScore: number;
+  reason: string;
+};
+
 
 const dashboardLinks = [
     {
@@ -207,58 +212,19 @@ export default async function DashboardPage() {
         },
     });
 
-    // const recommendedBooks = await prisma.book.findMany({
-    //     where: {
-    //         status: "PUBLISHED",
-    //     },
-    //     take: 3,
-    //     orderBy: {
-    //         createdAt: "desc",
-    //     },
-    //     include: {
-    //         author: true,
-    //     },
-    // });
+   
 
 
     const categoryIds = [
         ...new Set(
-            // progress.flatMap((item) =>
-            //     item.book.categories?.map((categoryItem) => categoryItem.categoryId) || []
-            // )
-
+          
             progress.flatMap((item: ProgressItem) =>
   item.book.categories?.map((categoryItem: CategoryItem) => categoryItem.categoryId) || []
 )
         ),
     ];
 
-    // const recommendedBooks = await prisma.book.findMany({
-    //   where: {
-    //     status: "PUBLISHED",
-    //     ...(categoryIds.length > 0
-    //       ? {
-    //           categories: {
-    //             some: {
-    //               categoryId: {
-    //                 in: categoryIds,
-    //               },
-    //             },
-    //           },
-    //         }
-    //       : {}),
-    //     id: {
-    //       notIn: progress.map((item) => item.bookId),
-    //     },
-    //   },
-    //   take: 3,
-    //   orderBy: {
-    //     createdAt: "desc",
-    //   },
-    //   include: {
-    //     author: true,
-    //   },
-    // });
+   
 
 
     let recommendedBooks = await prisma.book.findMany({
@@ -308,21 +274,7 @@ export default async function DashboardPage() {
         });
     }
 
-    // const recommendedBooksWithScore = recommendedBooks.map((book) => {
-    //     const matchingCategories =
-    //         book.categories?.filter((item) => categoryIds.includes(item.categoryId))
-    //             .length || 0;
-
-    //     const matchScore =
-    //         categoryIds.length > 0
-    //             ? Math.min(98, 70 + matchingCategories * 10)
-    //             : 80;
-
-    //     return {
-    //         ...book,
-    //         matchScore,
-    //     };
-    // });
+  
 
     const recommendedBooksWithScore = recommendedBooks.map((book: RecommendedBookItem) => {
         const matchingCategories =
@@ -632,7 +584,8 @@ export default async function DashboardPage() {
 
                         <div className="space-y-4">
                             {/* {recommendedBooks.map((book, index) => ( */}
-                            {recommendedBooksWithScore.map((book) => (
+                            {/* {recommendedBooksWithScore.map((book) => ( */}
+                            {recommendedBooksWithScore.map((book: RecommendedBookWithScore) => (
                                 <Link
                                     key={book.id}
                                     href={`/library/${book.slug}`}
@@ -697,7 +650,8 @@ export default async function DashboardPage() {
                     </div>
 
                     <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-                        {dashboardLinks.map((item) => {
+                        {/* {dashboardLinks.map((item) => { */}
+                        {dashboardLinks.map((item: (typeof dashboardLinks)[number]) => {
                             const Icon = item.icon;
 
                             return (
