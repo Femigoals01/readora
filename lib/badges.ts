@@ -1,3 +1,5 @@
+
+
 import { prisma } from "@/lib/prisma";
 
 async function awardBadge(userId: string, badgeName: string, icon: string) {
@@ -38,10 +40,15 @@ export async function checkReadingBadges(userId: string) {
     select: { pagesRead: true },
   });
 
-  const totalPages = sessions.reduce(
-    (sum, session) => sum + session.pagesRead,
-    0
-  );
+//   const totalPages = sessions.reduce(
+//     (sum, session) => sum + session.pagesRead,
+//     0
+//   );
+
+const totalPages = sessions.reduce(
+  (sum: number, session: { pagesRead: number }) => sum + session.pagesRead,
+  0
+);
 
   const user = await prisma.user.findUnique({
     where: { id: userId },
