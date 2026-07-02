@@ -36,15 +36,54 @@ const categories = [
   { name: "Education", icon: GraduationCap },
 ];
 
-// const books = [
-//   { title: "Atomic Habits", author: "James Clear", progress: "72%", color: "bg-amber-100" },
-//   { title: "The Purpose Driven Life", author: "Rick Warren", progress: "65%", color: "bg-emerald-100" },
-//   { title: "Think and Grow Rich", author: "Napoleon Hill", progress: "58%", color: "bg-green-950 text-white" },
-//   { title: "The Power of Prayer", author: "Stormie Omartian", progress: "81%", color: "bg-blue-950 text-white" },
-//   { title: "Spiritual Leadership", author: "J. Oswald Sanders", progress: "38%", color: "bg-slate-900 text-white" },
-// ];
+type ReviewItem = {
+  rating: number;
+};
 
-// export default function HomePage() {
+type FeaturedBookItem = {
+  id: string;
+  title: string;
+  slug: string;
+  coverImage: string | null;
+  author: {
+    name: string;
+  } | null;
+  reviews: ReviewItem[];
+};
+
+type ReadingSessionItem = {
+  pagesRead: number;
+};
+
+type ReadingProgressItem = {
+  completed: boolean;
+};
+
+type TopReaderItem = {
+  id: string;
+  name: string | null;
+  readingXp: number;
+  readingProgress: ReadingProgressItem[];
+};
+
+type WeeklyReaderItem = {
+  id: string;
+  name: string | null;
+  readingSessions: ReadingSessionItem[];
+};
+
+type WeeklyReaderWithPages = WeeklyReaderItem & {
+  weeklyPages: number;
+};
+
+type BookCategoryItem = {
+  category: {
+    id: string;
+    name: string;
+  };
+};
+
+
 
 export default async function HomePage() {
 
@@ -60,7 +99,7 @@ export default async function HomePage() {
     },
   });
 
-  const featuredBooks = allFeaturedBooks
+  const featuredBooks = (allFeaturedBooks as FeaturedBookItem[])
     .sort(() => Math.random() - 0.5)
     .slice(0, 5);
 
@@ -158,14 +197,14 @@ export default async function HomePage() {
   });
 
   const weeklyTopReaders = weeklyReadersRaw
-    .map((reader) => ({
+    .map((reader: WeeklyReaderItem) => ({
       ...reader,
       weeklyPages: reader.readingSessions.reduce(
-        (sum, session) => sum + session.pagesRead,
+        (sum: number, session: ReadingSessionItem) => sum + session.pagesRead,
         0
       ),
     }))
-    .sort((a, b) => b.weeklyPages - a.weeklyPages)
+    .sort((a: WeeklyReaderWithPages, b: WeeklyReaderWithPages) => b.weeklyPages - a.weeklyPages)
     .slice(0, 3);
 
 
@@ -400,10 +439,10 @@ export default async function HomePage() {
           </div>
         ) : (
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
-            {featuredBooks.map((book) => {
+            {featuredBooks.map((book: FeaturedBookItem) => {
               const averageRating =
                 book.reviews.length > 0
-                  ? book.reviews.reduce((sum, review) => sum + review.rating, 0) /
+                  ? book.reviews.reduce((sum: number, review: ReviewItem) => sum + review.rating, 0) /
                   book.reviews.length
                   : 0;
 
@@ -640,7 +679,7 @@ export default async function HomePage() {
 
                   <div className="mt-3 flex flex-wrap gap-2">
                     {bookOfTheMonth.categories.length > 0 ? (
-                      bookOfTheMonth.categories.map((item) => (
+                      bookOfTheMonth.categories.map((item: BookCategoryItem) => (
                         <span
                           key={item.category.id}
                           className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-700"
@@ -764,7 +803,7 @@ export default async function HomePage() {
 
               <div className="space-y-4">
                 {topReaders.length > 0 ? (
-                  topReaders.map((reader, index) => (
+                  topReaders.map((reader: TopReaderItem, index: number) => (
                     <div key={reader.id} className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <span className="text-sm font-black text-slate-500">
@@ -776,7 +815,7 @@ export default async function HomePage() {
                             {reader.name || "Reader"}
                           </p>
                           <p className="text-xs text-slate-500">
-                            {reader.readingProgress.filter((item) => item.completed).length} books
+                            {reader.readingProgress.filter((item: ReadingProgressItem) => item.completed).length} books
                           </p>
                         </div>
                       </div>
@@ -801,7 +840,7 @@ export default async function HomePage() {
 
               <div className="space-y-4">
                 {weeklyTopReaders.length > 0 ? (
-                  weeklyTopReaders.map((reader, index) => (
+                  weeklyTopReaders.map((reader: WeeklyReaderWithPages, index: number) => (
                     <div key={reader.id} className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <span className="text-sm font-black text-slate-500">
