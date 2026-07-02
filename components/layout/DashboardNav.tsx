@@ -13,8 +13,7 @@ export default async function DashboardNav() {
   const role = session?.user?.role;
 
   return (
-    // <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur">
-    <header className="sticky top-0 z-50 hidden border-b border-slate-200 bg-white/90 backdrop-blur lg:block">
+    <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 md:px-8">
         <Link href="/dashboard" className="flex items-center gap-3">
           <Image

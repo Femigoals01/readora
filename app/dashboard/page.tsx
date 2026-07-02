@@ -327,8 +327,7 @@ export default async function DashboardPage() {
 
 
                 {/* <header className="mb-8 grid gap-4 md:grid-cols-2 "> */}
-                {/* <header className="mb-8 grid gap-4 md:grid-cols-2"> */}
-                <header className="mb-6">
+                <header className="mb-8 grid gap-4 md:grid-cols-2">
                     <div>
                         {/* <h1 className="text-4xl font-black text-[#000D24]"> */}
                         <h1 className="text-3xl font-black leading-tight text-[#000D24] sm:text-4xl">
@@ -342,8 +341,7 @@ export default async function DashboardPage() {
 
                     {/* <div className="grid md:grid-cols-2 gap-2"> */}
 
-                    {/* <div className="grid grid-cols-2 gap-2 max-[420px]:grid-cols-1"> */}
-                    <div className="mt-5 grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-2 gap-2 max-[420px]:grid-cols-1">
                         <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm flex items-center ">
                             <div className="flex items-center gap-3">
                                 <Flame className="text-orange-500" />
@@ -376,13 +374,12 @@ export default async function DashboardPage() {
 
 
 
-                {/* <section className="grid gap-5 md:grid-cols-2"> */}
-                <section className="grid gap-4 lg:grid-cols-2">
+                <section className="grid gap-5 md:grid-cols-2">
                     {/* TODAY'S GOAL */}
                     <div className="rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-sm ">
                         {/* <div className="grid h-full items-center gap- sm:grid-cols-[1fr_170px] grid-cols-2"> */}
-                        {/* <div className="grid h-full grid-cols-2 items-center gap-4 max-[420px]:grid-cols-1"> */}
                         <div className="grid h-full grid-cols-2 items-center gap-4 max-[420px]:grid-cols-1">
+
                             <div>
                                 <h2 className="text-base font-black text-[#000D24]">
                                     Today&apos;s Goal
@@ -427,8 +424,7 @@ export default async function DashboardPage() {
 
                         {currentBook ? (
                             // <div className="mt-4 flex items-center  grid grid-cols-2">
-                            // <div className="mt-4 grid grid-cols-2 items-center gap-4 max-[420px]:grid-cols-1">
-                            <div className="mt-4 flex flex-col gap-5 sm:grid sm:grid-cols-2 sm:items-center">
+                            <div className="mt-4 grid grid-cols-2 items-center gap-4 max-[420px]:grid-cols-1">
                                 <div className="flex h-36 w-24 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[#000D24] text-center text-white">
                                     {currentBook.book.coverImage ? (
                                         <img
@@ -586,16 +582,14 @@ export default async function DashboardPage() {
                             </Link>
                         </div>
 
-                        {/* <div className="space-y-4"> */}
-                        <div className="flex gap-4 overflow-x-auto pb-2 lg:block lg:space-y-4">
+                        <div className="space-y-4">
                             {/* {recommendedBooks.map((book, index) => ( */}
                             {/* {recommendedBooksWithScore.map((book) => ( */}
                             {recommendedBooksWithScore.map((book: RecommendedBookWithScore) => (
                                 <Link
                                     key={book.id}
                                     href={`/library/${book.slug}`}
-                                    // className="flex gap-4 rounded-2xl bg-slate-50 p-3"
-                                    className="min-w-[270px] rounded-2xl bg-slate-50 p-3 flex gap-4 lg:min-w-0"
+                                    className="flex gap-4 rounded-2xl bg-slate-50 p-3"
                                 >
                                     <div className="flex h-20 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-[#000D24] text-center text-white">
                                         {book.coverImage ? (
@@ -655,10 +649,9 @@ export default async function DashboardPage() {
                         </h2>
                     </div>
 
-                    {/* <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3"> */}
-                    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                    <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
                         {/* {dashboardLinks.map((item) => { */}
-                        {dashboardLinks.map((item: (typeof dashboardLinks)[number]) => {
+                         {dashboardLinks.map((item: (typeof dashboardLinks)[number]) => {
                             const Icon = item.icon;
 
                             return (
