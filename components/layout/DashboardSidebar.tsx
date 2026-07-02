@@ -42,7 +42,8 @@ export default async function DashboardSidebar() {
 
   return (
     // <aside className="hidden w-72 shrink-0 border-r border-slate-200 bg-white p-5 lg:block">
-    <aside className="w-72 shrink-0 border-r border-slate-200 bg-white p-5">
+    // <aside className="w-72 shrink-0 border-r border-slate-200 bg-white p-5">
+    <aside className="hidden w-72 shrink-0 border-r border-slate-200 bg-white p-5 lg:block">
       <div className="sticky top-24">
         <p className="mb-4 px-3 text-xs font-black uppercase tracking-[0.18em] text-slate-400">
           Reader Menu
