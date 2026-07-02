@@ -103,11 +103,13 @@ const averageRating =
 
      const session = await getServerSession(authOptions);
 
-    const userReview = session?.user?.id
+//     const userReview = session?.user?.id
+//   ? book.reviews.find((review: ReviewItem) => review.userId === session.user.id)
+//   : null;
+
+   const userReview = session?.user?.id
   ? book.reviews.find((review: ReviewItem) => review.userId === session.user.id)
   : null;
-
-   
 
 const savedBook = session?.user?.id
   ? await prisma.savedBook.findFirst({
