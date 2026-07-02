@@ -1,11 +1,19 @@
 
 
-
-// import { PrismaAdapter } from "@auth/prisma-adapter";
+// import { PrismaAdapter } from "@next-auth/prisma-adapter";
+// import type { Role } from "@prisma/client";
 // import type { NextAuthOptions } from "next-auth";
 // import CredentialsProvider from "next-auth/providers/credentials";
 // import bcrypt from "bcryptjs";
 // import { prisma } from "@/lib/prisma";
+
+// type AuthUser = {
+//   id: string;
+//   name: string | null;
+//   email: string;
+//   image: string | null;
+//   role: Role;
+// };
 
 // export const authOptions: NextAuthOptions = {
 //   adapter: PrismaAdapter(prisma),
@@ -23,7 +31,7 @@
 //         password: { label: "Password", type: "password" },
 //       },
 
-//       async authorize(credentials) {
+//       async authorize(credentials): Promise<AuthUser | null> {
 //         if (!credentials?.email || !credentials?.password) return null;
 
 //         const user = await prisma.user.findUnique({
@@ -51,9 +59,11 @@
 //   ],
 //   callbacks: {
 //     async jwt({ token, user }) {
-//       if (user) {
-//         token.id = user.id;
-//         token.role = user.role;
+//       const authUser = user as AuthUser | undefined;
+
+//       if (authUser) {
+//         token.id = authUser.id;
+//         token.role = authUser.role;
 //       }
 
 //       return token;
@@ -61,8 +71,8 @@
 
 //     async session({ session, token }) {
 //       if (session.user) {
-//         session.user.id = token.id as string;
-//         session.user.role = token.role as string;
+//         session.user.id = String(token.id);
+//         session.user.role = token.role as Role;
 //       }
 
 //       return session;
@@ -72,14 +82,13 @@
 
 
 
-// import { PrismaAdapter } from "@auth/prisma-adapter";
-
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import type { Role } from "@prisma/client";
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
+
+type Role = "READER" | "CONTRIBUTOR" | "ADMIN";
 
 type AuthUser = {
   id: string;
@@ -126,7 +135,7 @@ export const authOptions: NextAuthOptions = {
           name: user.name,
           email: user.email,
           image: user.image,
-          role: user.role,
+          role: user.role as Role,
         };
       },
     }),
